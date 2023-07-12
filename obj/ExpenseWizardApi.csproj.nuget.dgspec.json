@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Workspace\\ExpenseWizardApi\\ExpenseWizardApi.csproj": {}
+    "E:\\Workspace\\expense-wizard-api\\ExpenseWizardApi.csproj": {}
   },
   "projects": {
-    "C:\\Workspace\\ExpenseWizardApi\\ExpenseWizardApi.csproj": {
+    "E:\\Workspace\\expense-wizard-api\\ExpenseWizardApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Workspace\\ExpenseWizardApi\\ExpenseWizardApi.csproj",
+        "projectUniqueName": "E:\\Workspace\\expense-wizard-api\\ExpenseWizardApi.csproj",
         "projectName": "ExpenseWizardApi",
-        "projectPath": "C:\\Workspace\\ExpenseWizardApi\\ExpenseWizardApi.csproj",
-        "packagesPath": "C:\\Users\\syjoly\\.nuget\\packages\\",
-        "outputPath": "C:\\Workspace\\ExpenseWizardApi\\obj\\",
+        "projectPath": "E:\\Workspace\\expense-wizard-api\\ExpenseWizardApi.csproj",
+        "packagesPath": "C:\\Users\\Sylvain\\.nuget\\packages\\",
+        "outputPath": "E:\\Workspace\\expense-wizard-api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\syjoly\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Sylvain\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"

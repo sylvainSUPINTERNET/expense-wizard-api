@@ -1,4 +1,5 @@
 using ExpenseWizardApi.Models.CardHolder;
+using Newtonsoft.Json;
 using Stripe;
 
 namespace ExpenseWizardApi.Services
@@ -23,7 +24,6 @@ namespace ExpenseWizardApi.Services
 
             try
             {
-                Console.WriteLine(options);
                 var service = new Stripe.Issuing.CardholderService();
                 return await service.CreateAsync(options);
             }
