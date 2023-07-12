@@ -1,6 +1,6 @@
 using ExpenseWizardApi.Services;
 using Stripe;
-// StripeConfiguration.ApiKey = "sk_test_51N6dD2G9WAND04yWkEIRhFTbhQuFs6r6hHGqDmXoMVpdeN16xWlPMnub2bNp22uwzQ22fEaks10bG8tIk6jaGxeU00udaG1iux";
+// StripeConfiguration.ApiKey = "";
 
 var builder = WebApplication.CreateBuilder(args);
 
