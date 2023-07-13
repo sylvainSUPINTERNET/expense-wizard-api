@@ -1,12 +1,16 @@
+using ExpenseWizardApi.Configuration;
 using ExpenseWizardApi.Services;
-using Stripe;
-StripeConfiguration.ApiKey = "";
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<ConfigSettings>(
+    builder.Configuration.GetSection("ExpenseWizardStore"));
 
 // Add services to the container.
-builder.Services.AddScoped<ICardHolderService, CardHolderService>();
+// https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mongo-app?view=aspnetcore-7.0&tabs=visual-studio
+// Advise to use Singleton for the database connection
+builder.Services.AddSingleton<ICardHolderService, CardHolderService>();
+builder.Services.AddSingleton<ICardService, CardService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Workspace\\expense-wizard-api\\ExpenseWizardApi.csproj": {}
+    "C:\\Workspace\\ExpenseWizardApi\\ExpenseWizardApi.csproj": {}
   },
   "projects": {
-    "E:\\Workspace\\expense-wizard-api\\ExpenseWizardApi.csproj": {
+    "C:\\Workspace\\ExpenseWizardApi\\ExpenseWizardApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Workspace\\expense-wizard-api\\ExpenseWizardApi.csproj",
+        "projectUniqueName": "C:\\Workspace\\ExpenseWizardApi\\ExpenseWizardApi.csproj",
         "projectName": "ExpenseWizardApi",
-        "projectPath": "E:\\Workspace\\expense-wizard-api\\ExpenseWizardApi.csproj",
-        "packagesPath": "C:\\Users\\Sylvain\\.nuget\\packages\\",
-        "outputPath": "E:\\Workspace\\expense-wizard-api\\obj\\",
+        "projectPath": "C:\\Workspace\\ExpenseWizardApi\\ExpenseWizardApi.csproj",
+        "packagesPath": "C:\\Users\\syjoly\\.nuget\\packages\\",
+        "outputPath": "C:\\Workspace\\ExpenseWizardApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Sylvain\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\syjoly\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -42,6 +42,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.9, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.20.0, )"
             },
             "Stripe.net": {
               "target": "Package",

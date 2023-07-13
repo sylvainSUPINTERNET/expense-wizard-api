@@ -36,6 +36,19 @@
                 "${workspaceFolder}/ExpenseWizardApi.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "type": "go",
+            "label": "go: build package",
+            "command": "build",
+            "args": [
+                "${fileDirname}"
+            ],
+            "problemMatcher": [
+                "$go"
+            ],
+            "group": "build",
+            "detail": "cd c:\\Workspace\\ExpenseWizardApi; go build ${fileDirname}"
         }
     ]
 }

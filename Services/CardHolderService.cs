@@ -1,5 +1,8 @@
-using ExpenseWizardApi.Models.CardHolder;
-using Newtonsoft.Json;
+using ExpenseWizardApi.Configuration;
+using ExpenseWizardApi.Domain.Models;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Stripe;
 
 namespace ExpenseWizardApi.Services
@@ -7,11 +10,26 @@ namespace ExpenseWizardApi.Services
     public class CardHolderService : ICardHolderService
     {
 
+        private readonly  IOptions<ConfigSettings> _config;
         private readonly ILogger<CardHolderService> _logger;
 
-        public CardHolderService(ILogger<CardHolderService> logger)
+        private readonly IMongoCollection<CardHolder> _cardHoldersCollection;
+
+        public CardHolderService(ILogger<CardHolderService> logger, IOptions<ConfigSettings> config)
         {
             _logger = logger;
+            _config = config;
+
+            var mongoClient = new MongoClient(
+                config.Value.ConnectionString);
+
+            var mongoDatabase = mongoClient.GetDatabase(
+                config.Value.DatabaseName);
+
+
+            _cardHoldersCollection = mongoDatabase.GetCollection<CardHolder>(
+                config.Value.CardHolderCollection);
+            
         }
         /**
          * Support only for individual card holder and company card holders
@@ -24,8 +42,24 @@ namespace ExpenseWizardApi.Services
 
             try
             {
+                StripeConfiguration.ApiKey = _config.Value.StripeKey;
+
                 var service = new Stripe.Issuing.CardholderService();
-                return await service.CreateAsync(options);
+
+                // step 1
+                var resp = await service.CreateAsync(options);
+
+
+                // step 2
+                await _cardHoldersCollection.InsertOneAsync(new CardHolder
+                {
+                    CardHolderId = resp.Id,
+
+                    // TODO : replace this mock with real user id
+                    UserId = ObjectId.GenerateNewId().ToString()
+                });
+
+                return resp;
             }
             catch (StripeException e)
             {

@@ -1,7 +1,7 @@
 
+using ExpenseWizardApi.Models;
 using ExpenseWizardApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 
 namespace ExpenseWizardApi.Controllers;
@@ -22,14 +22,11 @@ public class CardHolderController:ControllerBase
     }
 
     [HttpPost(Name = "CreateCardHolder")]
-    public async Task<IActionResult> CreateCard([FromBody] Stripe.Issuing.CardholderCreateOptions card)
+    public async Task<IActionResult> CreateCardHolder([FromBody] Stripe.Issuing.CardholderCreateOptions card)
     {
-        
         var cardHolder = await _cardHolderService.CreateCardHolderAsync(card);
-
-        _logger.LogInformation(cardHolder.Id); // Example usage of the returned cardholder ID
-
-        return Ok(card);
+        // TODO => save id into database !
+        return Ok(new CreateCardHolderResponseModel { cardHolderId = cardHolder.Id});
     }
 
 }

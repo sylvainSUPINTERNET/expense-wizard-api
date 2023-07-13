@@ -1,7 +1,3 @@
-
-
-using System.Text.Json.Serialization;
-
 namespace ExpenseWizardApi.Models.CardHolder;
 
 public class CardModel 
@@ -12,7 +8,6 @@ public class CardModel
 
     public required string Email {get;set;}
 
-    [JsonPropertyName("phone_number")]
     public required string PhoneNumber {get;set;}
 
     public required Stripe.Issuing.CardholderBillingOptions Billing {get;set;}
