@@ -29,4 +29,11 @@ public class CardHolderController:ControllerBase
         return Ok(new CreateCardHolderResponseModel { cardHolderId = cardHolder.Id});
     }
 
+
+    [HttpGet("{userId}", Name = "GetCardHoldersByUserId")]
+    public async Task<IActionResult> GetCardHoldersByUserId(string userId)
+    {
+        var cardHolders = await _cardHolderService.GetCardHoldersByUserIdAsync(userId);
+        return Ok(cardHolders);
+    }
 }

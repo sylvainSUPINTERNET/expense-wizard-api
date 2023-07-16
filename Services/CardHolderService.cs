@@ -78,5 +78,13 @@ namespace ExpenseWizardApi.Services
                 throw; // Rethrow the exception to be handled further up the call stack
             }
         }
+
+        public async Task<dynamic> GetCardHoldersByUserIdAsync(string userId)
+        {
+            var cardHolders = await _cardHoldersCollection.Find($"{{ userId: ObjectId('{userId}') }}").ToListAsync();
+            return cardHolders;
+        }
     }
+
+ 
 }
