@@ -34,7 +34,7 @@ var app = builder.Build();
 
 // https://stripe.com/docs/api?lang=dotnet
 
-app.UseCors(polic);
+app.UseCors(policyCors);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

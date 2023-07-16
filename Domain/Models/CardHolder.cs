@@ -11,6 +11,7 @@ public class CardHolder
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
 
+    [BsonElement("userId")]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? UserId { get; set; }
 
@@ -18,6 +19,8 @@ public class CardHolder
     public string? CardHolderId { get; set; }
 
     
+    
+    [BsonElement("createdAt")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 }

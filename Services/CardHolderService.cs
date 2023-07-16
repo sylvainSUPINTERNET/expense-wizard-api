@@ -56,7 +56,8 @@ namespace ExpenseWizardApi.Services
                     CardHolderId = resp.Id,
 
                     // TODO : replace this mock with real user id
-                    UserId = ObjectId.GenerateNewId().ToString()
+                    // UserId = ObjectId.GenerateNewId().ToString()
+                    UserId = "507f1f77bcf86cd799439011"
                 });
 
                 return resp;
