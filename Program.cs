@@ -1,7 +1,18 @@
 using ExpenseWizardApi.Configuration;
 using ExpenseWizardApi.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
+
+// TODO => update allowed origins
+var policyCors = "AllowedOrigins";
+builder.Services.AddCors( options => {
+    options.AddPolicy(policyCors, builder => {
+        builder.WithOrigins("*")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.Configure<ConfigSettings>(
     builder.Configuration.GetSection("ExpenseWizardStore"));
@@ -23,6 +34,7 @@ var app = builder.Build();
 
 // https://stripe.com/docs/api?lang=dotnet
 
+app.UseCors(polic);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -30,6 +42,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 
