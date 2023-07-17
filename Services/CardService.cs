@@ -30,7 +30,7 @@ public class CardService : ICardService
             config.Value.CardCollection);
     }
 
-    public async Task<Stripe.Issuing.Card> CreateCardAsync (Stripe.Issuing.CardCreateOptions options)
+    public async Task<ExpenseWizardApi.Domain.Models.Card> CreateCardAsync (Stripe.Issuing.CardCreateOptions options)
     {
             try
             {
@@ -41,15 +41,25 @@ public class CardService : ICardService
                 // step 1
                 Stripe.Issuing.Card resp = await service.CreateAsync(options);
 
-        
 
-                await _cardCollection.InsertOneAsync(
-                new ExpenseWizardApi.Domain.Models.Card
-                {
-                    CardHolderId = resp.Cardholder.Id,
-                });
+                _logger.LogInformation(resp.ToString());
 
-                return resp;
+                ExpenseWizardApi.Domain.Models.Card newCard = new ExpenseWizardApi.Domain.Models.Card {
+                        CardHolderId = resp.Cardholder.Id,
+                        // TODO change front end to send user id
+                        UserId = "507f1f77bcf86cd799439011",
+                        Last4 = resp.Last4,
+                        ExpMonth = resp.ExpMonth,
+                        ExpYear = resp.ExpYear,
+                        Brand = resp.Brand,
+                        Currency = resp.Currency,
+                        Active = resp.Status,
+                        Type = resp.Type
+                };
+
+                await _cardCollection.InsertOneAsync(newCard);
+
+                return newCard;
             }
             catch (StripeException e)
             {
@@ -66,6 +76,12 @@ public class CardService : ICardService
                 // Handle or log the error as needed
                 throw; // Rethrow the exception to be handled further up the call stack
             }
+    }
+
+    public async Task<dynamic> GetCardsByUserId(string userId)
+    {
+        var cards = await _cardCollection.Find($"{{ userId: ObjectId('{userId}') }}").ToListAsync();
+        return cards;
     }
 
 }

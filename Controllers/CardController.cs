@@ -1,5 +1,4 @@
 
-using ExpenseWizardApi.Models;
 using ExpenseWizardApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,10 +25,16 @@ public class CardController:ControllerBase
     {
         var newCard = await _cardService.CreateCardAsync(card);
         
-        return Ok(new CreateCardResponseModel {
-            cardId = newCard.Id,
-            cardHolderId = newCard.Cardholder.Id
-        });
+        return Ok(newCard);
     }
+
+
+    [HttpGet("{userId}", Name = "GetCardsByUserId")]
+    public async Task<IActionResult> GetCardsByUserId(string userId)
+    {
+        var cardHolders = await _cardService.GetCardsByUserId(userId);
+        return Ok(cardHolders);
+    }
+
 
 }

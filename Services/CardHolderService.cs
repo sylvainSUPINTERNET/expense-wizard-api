@@ -37,7 +37,7 @@ namespace ExpenseWizardApi.Services
          * @param card The card holder to create
          * @return The card holder created
          */
-        public async Task<Stripe.Issuing.Cardholder> CreateCardHolderAsync(Stripe.Issuing.CardholderCreateOptions options)
+        public async Task<CardHolder> CreateCardHolderAsync(Stripe.Issuing.CardholderCreateOptions options)
         {
 
             try
@@ -50,17 +50,48 @@ namespace ExpenseWizardApi.Services
                 var resp = await service.CreateAsync(options);
 
 
-                // step 2
-                await _cardHoldersCollection.InsertOneAsync(new CardHolder
-                {
-                    CardHolderId = resp.Id,
+                _logger.LogInformation(resp.ToString());
 
-                    // TODO : replace this mock with real user id
-                    // UserId = ObjectId.GenerateNewId().ToString()
-                    UserId = "507f1f77bcf86cd799439011"
-                });
 
-                return resp;
+                CardHolder cardHolder = new CardHolder {
+                        CardHolderId = resp.Id,
+                        // TODO change front end to send user id
+                        UserId = "507f1f77bcf86cd799439011",
+                        Email = resp.Email,
+                        Name = resp.Name,
+                        Billing = new Billing {
+                            Address = new Domain.Models.Address
+                            {
+                                City = resp.Billing.Address.City,
+                                Country = resp.Billing.Address.Country,
+                                Line1 = resp.Billing.Address.Line1,
+                                PostalCode = resp.Billing.Address.PostalCode,
+                                State = resp.Billing.Address.State
+                            },
+                        },
+                        Individual = new Individual {
+                            Dob = new Domain.Models.Dob
+                            {
+                                Day = resp.Individual.Dob.Day,
+                                Month = resp.Individual.Dob.Month,
+                                Year = resp.Individual.Dob.Year
+                            },
+                            FirstName = resp.Individual.FirstName,
+                            LastName = resp.Individual.LastName
+                        },
+                        SpendingControls = new SpendingControls {
+                            AllowedCategories = resp.SpendingControls.AllowedCategories,
+                            BlockedCategories = resp.SpendingControls.BlockedCategories,
+                            SpendingLimits = resp.SpendingControls.SpendingLimits,
+                            SpendingLimitsCurrency = resp.SpendingControls.SpendingLimitsCurrency
+                        },
+                        Active = resp.Status,
+                        Type = resp.Type
+                    };
+
+                await _cardHoldersCollection.InsertOneAsync(cardHolder);
+
+                return cardHolder;
             }
             catch (StripeException e)
             {
@@ -78,7 +109,7 @@ namespace ExpenseWizardApi.Services
                 throw; // Rethrow the exception to be handled further up the call stack
             }
         }
-
+    
         public async Task<dynamic> GetCardHoldersByUserIdAsync(string userId)
         {
             var cardHolders = await _cardHoldersCollection.Find($"{{ userId: ObjectId('{userId}') }}").ToListAsync();

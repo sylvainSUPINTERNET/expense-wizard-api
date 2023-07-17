@@ -2,5 +2,8 @@ namespace ExpenseWizardApi.Services;
 
 public interface ICardService 
 {
-    public Task<Stripe.Issuing.Card> CreateCardAsync (Stripe.Issuing.CardCreateOptions options);
+    public Task<ExpenseWizardApi.Domain.Models.Card> CreateCardAsync (Stripe.Issuing.CardCreateOptions options);
+
+    public Task<dynamic> GetCardsByUserId(string userId);
+
 }
