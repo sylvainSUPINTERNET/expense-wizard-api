@@ -22,6 +22,8 @@ builder.Services.Configure<ConfigSettings>(
 // Advise to use Singleton for the database connection
 builder.Services.AddSingleton<ICardHolderService, CardHolderService>();
 builder.Services.AddSingleton<ICardService, CardService>();
+builder.Services.AddSingleton<IAccountService, AccountService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

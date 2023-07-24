@@ -20,68 +20,89 @@ public class AccountService : IAccountService
     }
 
 
+
+    public async Task<Balance> GetBalanceAsync()
+    {
+
+        StripeConfiguration.ApiKey = _config.Value.StripeKey;
+
+        var service = new BalanceService();
+        var resp = await service.GetAsync();
+
+        return resp;
+    }
+
+    
+    
+
+    // TODO : to remove ?
     // https://stripe.com/docs/connect/express-accounts
-    public async Task<AccountCreateOptions> CreateAccountAsync(AccountCreateOptions options)
+    public async Task<Stripe.Account> CreateAccountAsync(string accountToken, string personToken)
     {   
         
         try
             {
                 StripeConfiguration.ApiKey = _config.Value.StripeKey;
 
+                // var options = new AccountCreateOptions
+                // {
+                //     Type = "custom",
+                //     Country = "FR",
+                //     Email = "tes@test.com",
+                //     BusinessType = "individual",
 
-                options.Type = "express";
+                // };
+
+                // options.AccountToken = accountToken;
+
+                // options.Capabilities = new AccountCapabilitiesOptions
+                // {
+                //     CardPayments = new AccountCapabilitiesCardPaymentsOptions
+                //     {
+                //         Requested = true
+                //     },
+                //     Transfers = new AccountCapabilitiesTransfersOptions
+                //     {
+                //         Requested = truex
+                //     },
+                //     CardIssuing = new AccountCapabilitiesCardIssuingOptions
+                //     {
+                //         Requested = true
+                //     },
+                //     SepaDebitPayments = new AccountCapabilitiesSepaDebitPaymentsOptions
+                //     {
+                //         Requested = true
+                //     },
+                    
+                // };
+
+                // var service = new Stripe.AccountService();
+
+                // // step 1
+                // var resp = await service.CreateAsync(options);
+
+
+                // _logger.LogInformation(resp.ToString());
+
+
+                var options = new AccountCreateOptions
+                {
+                    Country = "FR",
+                    Type = "custom",
+                    Capabilities = new AccountCapabilitiesOptions
+                    {
+                        CardPayments = new AccountCapabilitiesCardPaymentsOptions { Requested = true },
+                        Transfers = new AccountCapabilitiesTransfersOptions { Requested = true },
+                        SepaDebitPayments = new AccountCapabilitiesSepaDebitPaymentsOptions { Requested = true },
+                        CardIssuing = new AccountCapabilitiesCardIssuingOptions { Requested = true }
+                    },
+                    AccountToken = accountToken,
+                };
 
                 var service = new Stripe.AccountService();
-
-                // step 1
                 var resp = await service.CreateAsync(options);
+                return resp;    
 
-
-                _logger.LogInformation(resp.ToString());
-
-
-                return ;
-
-
-                // CardHolder cardHolder = new CardHolder {
-                //         CardHolderId = resp.Id,
-                //         // TODO change front end to send user id
-                //         UserId = "507f1f77bcf86cd799439011",
-                //         Email = resp.Email,
-                //         Name = resp.Name,
-                //         Billing = new Billing {
-                //             Address = new Domain.Models.Address
-                //             {
-                //                 City = resp.Billing.Address.City,
-                //                 Country = resp.Billing.Address.Country,
-                //                 Line1 = resp.Billing.Address.Line1,
-                //                 PostalCode = resp.Billing.Address.PostalCode,
-                //                 State = resp.Billing.Address.State
-                //             },
-                //         },
-                //         Individual = new Individual {
-                //             Dob = new Domain.Models.Dob
-                //             {
-                //                 Day = resp.Individual.Dob.Day,
-                //                 Month = resp.Individual.Dob.Month,
-                //                 Year = resp.Individual.Dob.Year
-                //             },
-                //             FirstName = resp.Individual.FirstName,
-                //             LastName = resp.Individual.LastName
-                //         },
-                //         SpendingControls = new SpendingControls {
-                //             AllowedCategories = resp.SpendingControls.AllowedCategories,
-                //             BlockedCategories = resp.SpendingControls.BlockedCategories,
-                //             SpendingLimits = resp.SpendingControls.SpendingLimits,
-                //             SpendingLimitsCurrency = resp.SpendingControls.SpendingLimitsCurrency
-                //         },
-                //         Active = resp.Status,
-                //         Type = resp.Type
-                //     };
-
-                // await _cardHoldersCollection.InsertOneAsync(cardHolder);
-
-                // return cardHolder;
             }
             catch (StripeException e)
             {
@@ -99,4 +120,5 @@ public class AccountService : IAccountService
                 throw; // Rethrow the exception to be handled further up the call stack
             }
         }
+
 }

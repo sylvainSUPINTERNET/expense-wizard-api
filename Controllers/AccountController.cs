@@ -1,7 +1,6 @@
 using ExpenseWizardApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace ExpenseWizardApi.Controllers;
 
 
@@ -9,31 +8,44 @@ namespace ExpenseWizardApi.Controllers;
 [Route("api/accounts")]
 public class AccountController:ControllerBase 
 {
-    private readonly ILogger<CardController> _logger;
+    private readonly ILogger<AccountController> _logger;
 
-    private readonly IAccount _accountService;
+    private readonly IAccountService _accountService;
 
-    public AccountController(ILogger<AccountController> logger, IAccount accountService)
+    public AccountController(ILogger<AccountController> logger, IAccountService accountService)
     {
         _logger = logger;
         _accountService = accountService;
     }
 
-    [HttpPost(Name = "CreateAccount")]
-    public async Task<IActionResult> CreateAccount([FromBody] Stripe.AccountCreateOptions accountCreateOptions)
+
+
+    [HttpGet("balance", Name = "AccountBalance")]
+    [Produces("application/json")]
+    public async Task<IActionResult> GetBalance()
     {
-        var newAccount = await _accountService.CreateAccountAsync(accountCreateOptions);
+        var balance = await _accountService.GetBalanceAsync();
+        return Ok(balance);
+    }
+
+
+    // Since we use "custom" creation for account, we need to use a token ! 
+    [HttpPost(Name = "CreateAccount")]
+    [Produces("application/json")]
+    public async Task<IActionResult> CreateAccount([FromForm] IFormCollection formData)
+    {
+
+        string tokenAccount = formData["token-account"];
+        string tokenPerson = formData["token-person"];
+
+
+        // _logger.LogInformation($"Account Create Options: {accountCreateOptions.ToString()}");
+
+        var newAccount = await _accountService.CreateAccountAsync(tokenAccount, tokenPerson);
         
         return Ok(newAccount);
     }
 
-
-    // [HttpGet("{userId}", Name = "LoginAccount")]
-    // public async Task<IActionResult> GetCardsByUserId(string userId)
-    // {
-    //     var cardHolders = await _cardService.GetCardsByUserId(userId);
-    //     return Ok(cardHolders);
-    // }
 
 
 }

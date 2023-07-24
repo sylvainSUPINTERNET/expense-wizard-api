@@ -4,7 +4,9 @@ namespace ExpenseWizardApi.Services;
 
 public interface IAccountService
 {
-    public Task<Stripe.AccountCreateOptions> CreateAccountAsync(Stripe.AccountCreateOptions accountCreateOptions);
+    public Task<Stripe.Account> CreateAccountAsync(string accountToken, string personToken);
     
+
+    public Task<Stripe.Balance> GetBalanceAsync();
 
 }

@@ -1,5 +1,4 @@
 
-using ExpenseWizardApi.Models;
 using ExpenseWizardApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +10,11 @@ namespace ExpenseWizardApi.Controllers;
 [Route("api/cardholders")]
 public class CardHolderController:ControllerBase
 {
-    private readonly ILogger<CardController> _logger;
+    private readonly ILogger<CardHolderController> _logger;
 
     private readonly ICardHolderService _cardHolderService;
 
-    public CardHolderController(ILogger<CardController> logger, ICardHolderService cardHolderService)
+    public CardHolderController(ILogger<CardHolderController> logger, ICardHolderService cardHolderService)
     {
         _logger = logger;
         _cardHolderService = cardHolderService;
