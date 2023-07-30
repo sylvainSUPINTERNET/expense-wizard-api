@@ -85,19 +85,42 @@ public class AccountService : IAccountService
                 // _logger.LogInformation(resp.ToString());
 
 
-                var options = new AccountCreateOptions
-                {
-                    Country = "FR",
-                    Type = "custom",
-                    Capabilities = new AccountCapabilitiesOptions
+                // var options = new AccountCreateOptions
+                // {
+                //     Country = "FR",
+                //     Type = "custom",
+                //     Capabilities = new AccountCapabilitiesOptions
+                //     {
+                //         CardPayments = new AccountCapabilitiesCardPaymentsOptions { Requested = true },
+                //         Transfers = new AccountCapabilitiesTransfersOptions { Requested = true },
+                //         SepaDebitPayments = new AccountCapabilitiesSepaDebitPaymentsOptions { Requested = true },
+                //         CardIssuing = new AccountCapabilitiesCardIssuingOptions { Requested = true }
+                //     },
+                //     AccountToken = accountToken,
+                // };
+
+
+                    var xd = new TokenService();
+                    Token stripeToken = xd.Get(accountToken); // replace with your token ID
+                    dynamic data = xd.Get(stripeToken.Id); // replace with your token ID
+
+                    Console.WriteLine(stripeToken.ToString()); // Will print the type of token, e.g., "account"
+                                        Console.WriteLine(data.ToString()); // Will print the type of token, e.g., "account"
+
+
+                    var options = new AccountCreateOptions
                     {
-                        CardPayments = new AccountCapabilitiesCardPaymentsOptions { Requested = true },
-                        Transfers = new AccountCapabilitiesTransfersOptions { Requested = true },
-                        SepaDebitPayments = new AccountCapabilitiesSepaDebitPaymentsOptions { Requested = true },
-                        CardIssuing = new AccountCapabilitiesCardIssuingOptions { Requested = true }
-                    },
-                    AccountToken = accountToken,
-                };
+                        Country = "FR",
+                        Type = "custom",
+                        AccountToken = accountToken,
+                        Capabilities = new AccountCapabilitiesOptions
+                        {
+                            CardPayments = new AccountCapabilitiesCardPaymentsOptions { Requested = true },
+                            Transfers = new AccountCapabilitiesTransfersOptions { Requested = true },
+                            SepaDebitPayments = new AccountCapabilitiesSepaDebitPaymentsOptions { Requested = true },
+                            CardIssuing = new AccountCapabilitiesCardIssuingOptions { Requested = true }
+                        },
+                    };
 
                 var service = new Stripe.AccountService();
                 var resp = await service.CreateAsync(options);

@@ -23,6 +23,7 @@ builder.Services.Configure<ConfigSettings>(
 builder.Services.AddSingleton<ICardHolderService, CardHolderService>();
 builder.Services.AddSingleton<ICardService, CardService>();
 builder.Services.AddSingleton<IAccountService, AccountService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 
 builder.Services.AddControllers();

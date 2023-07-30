@@ -32,7 +32,7 @@ public class PaymentService : IPaymentService
             Source = stripeCardToken.CardTokenCustom.Id
         }; 
         var service = new ChargeService();
-
+ 
         Charge charge;
 
         try 
